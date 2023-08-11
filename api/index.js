@@ -7,7 +7,6 @@ const cors = require("cors");
 const jwt = require("jsonwebtoken");
 
 const app = express();
-const PORT = 8000;
 app.use(cors());
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -37,6 +36,6 @@ app.get('/login', (req, res) => {
 })
 
 
-app.listen(PORT, () => {
+app.listen(process.env.PORT || 8000, () => {
     console.log(`Server running in port ${PORT}`);
 });
