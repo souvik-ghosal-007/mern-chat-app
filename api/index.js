@@ -7,6 +7,7 @@ const cors = require("cors");
 const jwt = require("jsonwebtoken");
 
 const app = express();
+const PORT = 8000;
 app.use(cors());
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -27,15 +28,14 @@ mongoose
         );
     });
 
-app.get('/', (req, res) => {
+app.get("/", (req, res) => {
     res.status(200).json("Hello, Its Deployed");
-})
+});
 
-app.get('/login', (req, res) => {
+app.get("/login", (req, res) => {
     res.status(200).json("Hello, Its Logged In");
-})
+});
 
-
-app.listen(process.env.PORT || 8000, () => {
-    console.log(`Server running in port 8000`);
+app.listen(PORT, () => {
+    console.log(`Server running in port ${PORT}`);
 });
