@@ -37,5 +37,5 @@ app.get('/login', (req, res) => {
 
 
 app.listen(process.env.PORT || 8000, () => {
-    console.log(`Server running in port ${PORT}`);
+    console.log(`Server running in port 8000`);
 });
