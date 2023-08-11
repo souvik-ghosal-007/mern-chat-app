@@ -32,6 +32,11 @@ app.get('/', (req, res) => {
     res.status(200).json("Hello, Its Deployed");
 })
 
+app.get('/login', (req, res) => {
+    res.status(200).json("Hello, Its Logged In");
+})
+
+
 app.listen(PORT, () => {
     console.log(`Server running in port ${PORT}`);
 });
