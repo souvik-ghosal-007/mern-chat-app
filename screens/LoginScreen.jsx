@@ -1,4 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
+import axios from "axios";
 import React, { useState } from "react";
 import {
   KeyboardAvoidingView,
@@ -6,6 +7,7 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  ToastAndroid,
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -15,6 +17,27 @@ const LoginScreen = () => {
   const [password, setPassword] = useState("");
 
   const navigation = useNavigation();
+
+  const handleLogin = () => {
+    const user = {
+      email,
+      password,
+    };
+
+    axios
+      .post("https://chat-app-backend-of1h.onrender.com/login", user)
+      .then(() => {
+        ToastAndroid.show("Login Successfull !", ToastAndroid.SHORT);
+        setEmail("");
+        setPassword("");
+      })
+      .catch((err) => {
+        ToastAndroid.show(
+          "Some Error Occurred! Try Again,",
+          ToastAndroid.SHORT
+        );
+      });
+  };
 
   return (
     <SafeAreaView
@@ -91,6 +114,7 @@ const LoginScreen = () => {
           </View>
 
           <Pressable
+            onPress={handleLogin}
             style={{
               width: 200,
               backgroundColor: "#4A55A2",

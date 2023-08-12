@@ -36,12 +36,10 @@ const RegisterScreen = () => {
         setEmail("");
         setImage("");
         setPassword("");
-
-        navigation.navigate("Login");
       })
       .catch((err) => {
         ToastAndroid.show(
-          `Some Error Occurred ! Try again`,
+          "Some Error Occurred! Try Again,",
           ToastAndroid.SHORT
         );
       });
@@ -187,7 +185,7 @@ const RegisterScreen = () => {
             <View>
               <Text style={{ color: "grey" }}>Already have an account?</Text>
             </View>
-            <Pressable onPress={() => navigation.navigate("L  ogin")}>
+            <Pressable onPress={() => navigation.navigate("Login")}>
               <Text style={{ color: "#4A55A2" }}>Login</Text>
             </Pressable>
           </View>
@@ -198,5 +196,3 @@ const RegisterScreen = () => {
 };
 
 export default RegisterScreen;
-
-const styles = StyleSheet.create({});
