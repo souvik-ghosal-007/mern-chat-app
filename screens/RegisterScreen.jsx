@@ -2,6 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
 import React, { useState } from "react";
 import {
+  Keyboard,
   KeyboardAvoidingView,
   Pressable,
   StyleSheet,
@@ -21,6 +22,8 @@ const RegisterScreen = () => {
   const navigation = useNavigation();
 
   const handleRegister = () => {
+    Keyboard.dismiss();
+
     const user = {
       name,
       email,
@@ -36,6 +39,8 @@ const RegisterScreen = () => {
         setEmail("");
         setImage("");
         setPassword("");
+
+        navigation.navigate("Login");
       })
       .catch((err) => {
         ToastAndroid.show(
@@ -65,7 +70,7 @@ const RegisterScreen = () => {
           <Text
             style={{
               color: "#4A55A2",
-              fontSize: 17,
+              fontSize: 25,
               fontWeight: "600",
             }}
           >
@@ -101,7 +106,7 @@ const RegisterScreen = () => {
             />
           </View>
 
-          <View>
+          <View style={{ marginTop: 10 }}>
             <Text style={{ fontSize: 18, fontWeight: "600", color: "gray" }}>
               Email
             </Text>
@@ -135,6 +140,7 @@ const RegisterScreen = () => {
               }}
               placeholder="Enter Your Password"
               placeholderTextColor="lightgray"
+              keyboardType="email-address"
             />
           </View>
 
@@ -172,7 +178,7 @@ const RegisterScreen = () => {
             <Text
               style={{
                 color: "white",
-                fontSize: 16,
+                fontSize: 17,
                 fontWeight: "bold",
                 textAlign: "center",
               }}
@@ -181,12 +187,18 @@ const RegisterScreen = () => {
             </Text>
           </Pressable>
 
-          <View style={{ flexDirection: "row", gap: 6, marginTop: 15 }}>
+          <View style={{ flexDirection: "row", gap: 6, marginTop: 40 }}>
             <View>
-              <Text style={{ color: "grey" }}>Already have an account?</Text>
+              <Text style={{ color: "grey", fontSize: 17 }}>
+                Already have an account?
+              </Text>
             </View>
             <Pressable onPress={() => navigation.navigate("Login")}>
-              <Text style={{ color: "#4A55A2" }}>Login</Text>
+              <Text
+                style={{ color: "#4A55A2", fontSize: 17, fontWeight: "bold" }}
+              >
+                Login
+              </Text>
             </Pressable>
           </View>
         </View>

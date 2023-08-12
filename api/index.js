@@ -116,3 +116,21 @@ app.post("/login", (req, res) => {
       });
     });
 });
+
+app.get("/users/:userId", (res, req) => {
+  const loggedInUserId = req.params.userId;
+
+  User.find({ _id: { $ne: loggedInUserId } })
+    .then((users) => {
+      res.status(200).json({
+        status: "success",
+        data: users,
+      });
+    })
+    .catch((err) => {
+      res.status(400).json({
+        status: "failed",
+        message: `Failed to get users: ${err.message}`,
+      });
+    });
+});
