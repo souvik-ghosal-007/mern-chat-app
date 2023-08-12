@@ -60,7 +60,7 @@ app.post("/register", (req, res) => {
     .catch((err) =>
       res.status(500).json({
         status: "failed",
-        message: `Error Registering the user: ${err.message}`,
+        message: err,
       })
     );
 });
