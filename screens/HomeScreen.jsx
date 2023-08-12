@@ -38,7 +38,6 @@ const HomeScreen = () => {
       axios
         .get(`https://chat-app-backend-of1h.onrender.com/users/${userId}`)
         .then((res) => {
-          console.log(res.data);
           setUsers(res.data);
         })
         .catch((err) => {

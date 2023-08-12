@@ -124,7 +124,7 @@ app.get("/users/:userId", (req, res) => {
     .then((users) => {
       res.status(200).json({
         status: "success",
-        data: users,
+        users,
       });
     })
     .catch((err) => {
