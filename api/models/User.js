@@ -9,7 +9,7 @@ const userSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
-    unique: true,
+    unique: [true, "Email aready exists."],
   },
 
   password: {
@@ -35,7 +35,7 @@ const userSchema = new mongoose.Schema({
       ref: "User",
     },
   ],
-  
+
   sentfriendRequests: [
     {
       type: mongoose.Schema.Types.ObjectId,

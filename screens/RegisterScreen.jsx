@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  ToastAndroid,
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -26,6 +27,24 @@ const RegisterScreen = () => {
       password,
       image,
     };
+
+    axios
+      .post("https://chat-app-backend-of1h.onrender.com/register", user)
+      .then(() => {
+        ToastAndroid.show("Registration Successfull !", ToastAndroid.SHORT);
+        setName("");
+        setEmail("");
+        setImage("");
+        setPassword("");
+
+        navigation.navigate("Login");
+      })
+      .catch((err) => {
+        ToastAndroid.show(
+          `Some Error Occurred ! Try again`,
+          ToastAndroid.SHORT
+        );
+      });
   };
 
   return (
