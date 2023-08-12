@@ -5,6 +5,7 @@ import jwtDecode from "jwt-decode";
 import React, { useContext, useEffect, useLayoutEffect, useState } from "react";
 import { Button, Text, View } from "react-native";
 import { UserType } from "../UserContext";
+import axios from "axios";
 
 const HomeScreen = () => {
   const navigation = useNavigation();
@@ -46,7 +47,7 @@ const HomeScreen = () => {
     };
 
     fetchUsers();
-  });
+  }, []);
 
   return (
     <View>

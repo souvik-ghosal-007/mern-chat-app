@@ -117,7 +117,7 @@ app.post("/login", (req, res) => {
     });
 });
 
-app.get("/users/:userId", (res, req) => {
+app.get("/users/:userId", (req, res) => {
   const loggedInUserId = req.params.userId;
 
   User.find({ _id: { $ne: loggedInUserId } })
