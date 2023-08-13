@@ -1,11 +1,12 @@
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
+import axios from "axios";
 import jwtDecode from "jwt-decode";
 import React, { useContext, useEffect, useLayoutEffect, useState } from "react";
 import { Button, Text, View } from "react-native";
 import { UserType } from "../UserContext";
-import axios from "axios";
+import User from "../components/User";
 
 const HomeScreen = () => {
   const navigation = useNavigation();
@@ -28,7 +29,7 @@ const HomeScreen = () => {
     });
   }, []);
 
-  useEffect(async () => {
+  useEffect(() => {
     const fetchUsers = async () => {
       const token = await AsyncStorage.getItem("authToken");
       const decodedToken = jwtDecode(token);
@@ -38,7 +39,8 @@ const HomeScreen = () => {
       axios
         .get(`https://chat-app-backend-of1h.onrender.com/users/${userId}`)
         .then((res) => {
-          setUsers(res.data);
+          console.log(res.data.users);
+          setUsers(res.data.users);
         })
         .catch((err) => {
           console.log(err);
@@ -50,7 +52,11 @@ const HomeScreen = () => {
 
   return (
     <View>
-      <Text>HomeScreen</Text>
+      <View style={{padding:10}}>
+        {users.map((item, index) => (
+          <User key={index} item={item}/>
+        ))}
+      </View>
     </View>
   );
 };

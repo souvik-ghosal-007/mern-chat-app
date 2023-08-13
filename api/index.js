@@ -134,3 +134,24 @@ app.get("/users/:userId", (req, res) => {
       });
     });
 });
+
+// Send request to a user
+app.post("/friend-request", async (req, res) => {
+  const { currentUserId, selectedUserId } = req.body;
+
+  try {
+    //update the recipient's friend requests array
+    await User.findByIdAndUpdate(selectedUserId, {
+      $push: { friendRequests: currentUserId },
+    });
+
+    //update the sender's sent friend requests array
+    await User.findByIdAndUpdate(currentUserId, {
+      $push: { sentfriendRequests: selectedUserId },
+    });
+
+    res.sendStatus(200);
+  } catch (err) {
+    res.sendStatus(500);
+  }
+});
