@@ -23,7 +23,12 @@ const HomeScreen = () => {
       headerRight: () => (
         <View style={{ flexDirection: "row", gap: 20, alignItems: "center" }}>
           <Ionicons name="chatbox-ellipses-outline" size={28} color="black" />
-          <MaterialIcons name="people-outline" size={28} color="black" />
+          <MaterialIcons
+            onPress={() => navigation.navigate("Friends")}
+            name="people-outline"
+            size={28}
+            color="black"
+          />
         </View>
       ),
     });
@@ -52,9 +57,9 @@ const HomeScreen = () => {
 
   return (
     <View>
-      <View style={{padding:10}}>
+      <View style={{ padding: 10 }}>
         {users.map((item, index) => (
-          <User key={index} item={item}/>
+          <User key={index} item={item} />
         ))}
       </View>
     </View>
