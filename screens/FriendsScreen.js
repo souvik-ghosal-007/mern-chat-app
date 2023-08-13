@@ -7,7 +7,7 @@ import FriendRequest from "../components/FriendRequest";
 const FriendsScreen = () => {
   const { userId, setUserId } = useContext(UserType);
 
-  const [friendRequests, sentFriendRequests] = useState([]);
+  const [friendRequests, setFriendRequests] = useState([]);
 
   useEffect(() => {
     fetchFriendRequests();
@@ -27,7 +27,7 @@ const FriendsScreen = () => {
           image: friendRequest.image,
         }));
 
-        sentFriendRequests(friendRequestsData);
+        setFriendRequests(friendRequestsData);
       }
     } catch (error) {
       console.log(error);
@@ -45,7 +45,7 @@ const FriendsScreen = () => {
           key={index}
           item={item}
           friendRequests={friendRequests}
-          sentFriendRequests={sentFriendRequests}
+          setFriendRequests={setFriendRequests}
         />
       ))}
     </View>

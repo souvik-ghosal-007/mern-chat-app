@@ -22,7 +22,12 @@ const HomeScreen = () => {
       ),
       headerRight: () => (
         <View style={{ flexDirection: "row", gap: 20, alignItems: "center" }}>
-          <Ionicons name="chatbox-ellipses-outline" size={28} color="black" />
+          <Ionicons
+            onPress={() => navigation.navigate("Chats")}
+            name="chatbox-ellipses-outline"
+            size={28}
+            color="black"
+          />
           <MaterialIcons
             onPress={() => navigation.navigate("Friends")}
             name="people-outline"
