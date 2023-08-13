@@ -175,20 +175,29 @@ app.get("/friend-request/:userId", async (req, res) => {
 
 // Accept friend Request
 app.post("/friend-request/accept", async (req, res) => {
-  const { senderId, recipientId } = req.body;
+  try {
+    const { senderId, recipientId } = req.body;
 
-  // retrieve the docs of sender and recipient
-  const sender = await User.findById(senderId);
-  const recipient = await User.findById(recipientId);
+    // retrieve the docs of sender and recipient
+    const sender = await User.findById(senderId);
+    const recipient = await User.findById(recipientId);
 
-  sender.friends.push(recipientId);
-  recipient.friends.push(senderId);
+    sender.friends.push(recipientId);
+    recipient.friends.push(senderId);
 
-  recipient.friendRequests = recipient.friendRequests.filter(
-    (request) => request.toString() !== senderId.toString()
-  );
+    recipient.friendRequests = recipient.friendRequests.filter(
+      (request) => request.toString() !== senderId.toString()
+    );
 
-  sender.sentfriendRequests = sender.sentfriendRequests.filter(
-    (request) => request.toString() !== recipientId.toString()
-  );
+    sender.sentfriendRequests = sender.sentfriendRequests.filter(
+      (request) => request.toString() !== recipientId.toString()
+    );
+
+    await sender.save();
+    await recipient.save();
+
+    res.status(200).json({ message: "Friend Request Accepted..." });
+  } catch (error) {
+    res.status(500).json({ message: "Internal Server Error" });
+  }
 });
