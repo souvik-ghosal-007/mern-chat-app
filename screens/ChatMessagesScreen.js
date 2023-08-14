@@ -1,7 +1,9 @@
-import { Entypo, MaterialIcons } from "@expo/vector-icons";
+import { Entypo, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import React, { useContext, useLayoutEffect, useState } from "react";
+import axios from "axios";
+import React, { useContext, useEffect, useLayoutEffect, useState } from "react";
 import {
+  Image,
   Keyboard,
   KeyboardAvoidingView,
   Pressable,
@@ -10,7 +12,6 @@ import {
   TextInput,
   View,
 } from "react-native";
-import { Ionicons } from '@expo/vector-icons';
 import EmojiPicker from "rn-emoji-keyboard";
 import { UserType } from "../UserContext";
 
@@ -18,6 +19,7 @@ const ChatMessagesScreen = () => {
   const { userId, setUserId } = useContext(UserType);
   const navigation = useNavigation();
   const [showEmojiSelector, setShowEmojiSelector] = useState(false);
+  const [recipientData, setRecipientData] = useState();
   const [message, setMessage] = useState("");
   const [selectedImage, setSelectedImage] = useState("");
   const handleEmojiPress = () => {
@@ -64,17 +66,52 @@ const ChatMessagesScreen = () => {
     }
   };
 
+  useEffect(() => {
+    const fetchRecipientData = async () => {
+      try {
+        const res = await axios.get(
+          `https://chat-app-backend-of1h.onrender.com/user/${recipientId}`
+        );
+
+        setRecipientData(res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchRecipientData();
+  });
+
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: "",
       headerLeft: () => (
-        <View>
-          <Ionicons name="arrow-back" size={24} color="black" />
-          <Image source={{uri: }}/>
+        <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
+          <Ionicons
+            onPress={() => navigation.goBack()}
+            name="arrow-back"
+            size={26}
+            color="black"
+          />
+          <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
+            <Image
+              style={{
+                width: 30,
+                height: 30,
+                borderRadius: 15,
+                resizeMode: "cover",
+              }}
+              source={{ uri: recipientData?.image }}
+            />
+
+            <Text style={{ marginLeft: 5, fontSize: 15, fontWeight: "bold" }}>
+              {recipientData?.name}
+            </Text>
+          </View>
         </View>
-      )
-    })
-  });
+      ),
+    });
+  }, [recipientData]);
 
   return (
     <KeyboardAvoidingView style={{ flex: 1, backgroundColor: "#f0f0f0" }}>

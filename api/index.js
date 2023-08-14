@@ -220,38 +220,41 @@ app.get("/friends/:userId", async (req, res) => {
   }
 });
 
-// // Post messages
+// Post messages
+const multer = require("multer");
 
-// const storage = multer.diskStorage({
-//   destination: function (req, file, cb) {
-//     cb(null, "files/");
-//   },
-//   filename: function (req, file, cb) {
-//     const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-//     cb(null, uniqueSuffix + "-" + file.originalname);
-//   },
-// });
-// const upload = multer({ storage: storage });
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "files/");
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+    cb(null, uniqueSuffix + "-" + file.originalname);
+  },
+});
 
-// app.post("/messages", upload.single("imageFile"), async (req, res) => {
-//   try {
-//     const { senderId, recipientId, messageType, messageText } = req.body;
+const upload = multer({ storage: storage });
 
-//     const newMessage = new Message({
-//       senderId,
-//       recipientId,
-//       messageType,
-//       messageText,
-//       timeStamp: new Date(),
-//       imageUrl: messageType === "image",
-//     });
+app.post("/messages", upload.single("imageFile"), async (req, res) => {
+  try {
+    const { senderId, recepientId, messageType, messageText } = req.body;
 
-//     res.status(200).json({ message: "Message sent successfully" });
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).json({ message: "Internal Server Error" });
-//   }
-// });
+    const newMessage = new Message({
+      senderId,
+      recepientId,
+      messageType,
+      message: messageText,
+      timestamp: new Date(),
+      imageUrl: messageType === "image" ? req.file.path : null,
+    });
+
+    await newMessage.save();
+    res.status(200).json({ message: "Message sent Successfully" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
 
 //get the user details to design the chat room header
 app.get("/user/:userId", async (req, res) => {
