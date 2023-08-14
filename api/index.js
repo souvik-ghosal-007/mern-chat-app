@@ -275,7 +275,7 @@ app.get("/messages/:senderId/:recipientId", async (req, res) => {
   try {
     const { senderId, recipientId } = req.params;
 
-    const messages = await Message.findOne({
+    const messages = await Message.find({
       $or: [
         { senderId: senderId, recipientId: recipientId },
         { senderId: recipientId, recipientId: senderId },

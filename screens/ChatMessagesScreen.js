@@ -12,6 +12,7 @@ import {
   TextInput,
   View,
 } from "react-native";
+import EmojiModal from "react-native-emoji-modal";
 import EmojiPicker from "rn-emoji-keyboard";
 import { UserType } from "../UserContext";
 
@@ -51,10 +52,13 @@ const ChatMessagesScreen = () => {
 
       console.log(formData);
 
-      const res = await fetch("https://chat-app-backend-of1h.onrender.com/messages", {
-        method: "POST",
-        body: formData,
-      });
+      const res = await fetch(
+        "https://chat-app-backend-of1h.onrender.com/messages",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
       if (res.ok) {
         setMessage("");
@@ -111,6 +115,22 @@ const ChatMessagesScreen = () => {
       ),
     });
   }, [recipientData]);
+
+  const fetchMessages = async () => {
+    try {
+      const res = await axios.get(
+        `https://chat-app-backend-of1h.onrender.com/messages/messages/${senderId}/${recipientId}`
+      );
+
+      
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchMessages();
+  });
 
   return (
     <KeyboardAvoidingView style={{ flex: 1, backgroundColor: "#f0f0f0" }}>
@@ -177,15 +197,12 @@ const ChatMessagesScreen = () => {
           <MaterialIcons name="send" size={26} color="#36454f" />
         </Pressable>
       </View>
-
       {showEmojiSelector && (
-        <EmojiPicker
-          onEmojiSelected={({ emoji }) => {
+        <EmojiModal
+          onEmojiSelected={(emoji) => {
             setMessage((prev) => prev + emoji);
           }}
-          style={{ height: 250 }}
-          open={showEmojiSelector}
-          onClose={() => setShowEmojiSelector(false)}
+          columns={10}
         />
       )}
     </KeyboardAvoidingView>
