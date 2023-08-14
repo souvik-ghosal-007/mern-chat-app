@@ -7,6 +7,7 @@ const cors = require("cors");
 const jwt = require("jsonwebtoken");
 const User = require("./models/User");
 const Message = require("./models/Message");
+const multer = require("multer");
 
 const app = express();
 const PORT = 8000;
@@ -219,27 +220,38 @@ app.get("/friends/:userId", async (req, res) => {
   }
 });
 
-// Post messages
-const upload = multer({ storage: storage });
-app.post("/messages", upload.single("imageFile"), async (req, res) => {
-  try {
-    const { senderId, recipientId, messageType, messageText } = req.body;
+// // Post messages
 
-    const newMessage = new Message({
-      senderId,
-      recipientId,
-      messageType,
-      messageText,
-      timeStamp: new Date(),
-      imageUrl: messageType === "image",
-    });
+// const storage = multer.diskStorage({
+//   destination: function (req, file, cb) {
+//     cb(null, "files/");
+//   },
+//   filename: function (req, file, cb) {
+//     const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+//     cb(null, uniqueSuffix + "-" + file.originalname);
+//   },
+// });
+// const upload = multer({ storage: storage });
 
-    res.status(200).json({ message: "Message sent successfully" });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: "Internal Server Error" });
-  }
-});
+// app.post("/messages", upload.single("imageFile"), async (req, res) => {
+//   try {
+//     const { senderId, recipientId, messageType, messageText } = req.body;
+
+//     const newMessage = new Message({
+//       senderId,
+//       recipientId,
+//       messageType,
+//       messageText,
+//       timeStamp: new Date(),
+//       imageUrl: messageType === "image",
+//     });
+
+//     res.status(200).json({ message: "Message sent successfully" });
+//   } catch (error) {
+//     console.log(error);
+//     res.status(500).json({ message: "Internal Server Error" });
+//   }
+// });
 
 //get the user details to design the chat room header
 app.get("/user/:userId", async (req, res) => {

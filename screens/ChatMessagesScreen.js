@@ -1,5 +1,6 @@
 import { Entypo, MaterialIcons } from "@expo/vector-icons";
-import React, { useState } from "react";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import React, { useContext, useLayoutEffect, useState } from "react";
 import {
   Keyboard,
   KeyboardAvoidingView,
@@ -9,17 +10,71 @@ import {
   TextInput,
   View,
 } from "react-native";
-import EmojiInput from "react-native-emoji-input";
-import EmojiSelector from "react-native-emoji-selector";
+import { Ionicons } from '@expo/vector-icons';
 import EmojiPicker from "rn-emoji-keyboard";
+import { UserType } from "../UserContext";
 
 const ChatMessagesScreen = () => {
+  const { userId, setUserId } = useContext(UserType);
+  const navigation = useNavigation();
   const [showEmojiSelector, setShowEmojiSelector] = useState(false);
   const [message, setMessage] = useState("");
+  const [selectedImage, setSelectedImage] = useState("");
   const handleEmojiPress = () => {
     Keyboard.dismiss();
     setShowEmojiSelector(!showEmojiSelector);
   };
+
+  const route = useRoute();
+  const { recipientId } = route.params;
+
+  const handleSend = async (messageType, imageUri) => {
+    try {
+      const formData = new FormData();
+
+      formData.append("senderId", userId);
+      formData.append("recipientId", recipientId);
+
+      if (messageType === "image") {
+        formData.append("messageType", "image");
+        formData.append("image", {
+          uri: imageUri,
+          name: "image.jpg",
+          type: "image/jpeg",
+        });
+      } else {
+        formData.append("messageType", "text");
+        formData.append("messageText", message);
+      }
+
+      const res = await fetch(
+        "https://chat-app-backend-of1h.onrender.com/messages",
+        {
+          method: "POST",
+          body: FormData,
+        }
+      );
+
+      if (res.ok) {
+        setMessage("");
+        setSelectedImage("");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerTitle: "",
+      headerLeft: () => (
+        <View>
+          <Ionicons name="arrow-back" size={24} color="black" />
+          <Image source={{uri: }}/>
+        </View>
+      )
+    })
+  });
 
   return (
     <KeyboardAvoidingView style={{ flex: 1, backgroundColor: "#f0f0f0" }}>
@@ -76,6 +131,7 @@ const ChatMessagesScreen = () => {
         </View>
 
         <Pressable
+          onPress={() => handleSend("text")}
           style={{
             backgroundColor: "#D3D3D3",
             padding: 10,
