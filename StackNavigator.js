@@ -2,6 +2,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
 import { StyleSheet } from "react-native";
+import ChatMessagesScreen from "./screens/ChatMessagesScreen";
 import ChatsScreen from "./screens/ChatsScreen";
 import FriendsScreen from "./screens/FriendsScreen";
 import HomeScreen from "./screens/HomeScreen";
@@ -27,6 +28,7 @@ const StackNavigator = () => {
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Friends" component={FriendsScreen} />
         <Stack.Screen name="Chats" component={ChatsScreen} />
+        <Stack.Screen name="Messages" component={ChatMessagesScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

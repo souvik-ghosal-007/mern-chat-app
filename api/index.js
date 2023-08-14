@@ -218,3 +218,58 @@ app.get("/friends/:userId", async (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 });
+
+// Post messages
+const upload = multer({ storage: storage });
+app.post("/messages", upload.single("imageFile"), async (req, res) => {
+  try {
+    const { senderId, recipientId, messageType, messageText } = req.body;
+
+    const newMessage = new Message({
+      senderId,
+      recipientId,
+      messageType,
+      messageText,
+      timeStamp: new Date(),
+      imageUrl: messageType === "image",
+    });
+
+    res.status(200).json({ message: "Message sent successfully" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
+//get the user details to design the chat room header
+app.get("/user/:userId", async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    const recipientId = await User.findById(userId);
+
+    res.status(200).json(recipientId);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+// fetch all messages between 2 users
+app.get("/messages/:senderId/:recipientId", async (req, res) => {
+  try {
+    const { senderId, recipientId } = req.params;
+
+    const messages = await Message.findOne({
+      $or: [
+        { senderId: senderId, recipientId: recipientId },
+        { senderId: recipientId, recipientId: senderId },
+      ],
+    }).populate("senderId", "_id name");
+
+    res.status(200).json(messages);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
