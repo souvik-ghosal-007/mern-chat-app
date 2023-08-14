@@ -235,16 +235,18 @@ const upload = multer({ storage: storage });
 
 app.post("/messages", upload.single("imageFile"), async (req, res) => {
   try {
-    const { senderId, recepientId, messageType, messageText } = req.body;
+    const { senderId, recipientId, messageType, messageText } = req.body;
 
     const newMessage = new Message({
       senderId,
-      recepientId,
+      recipientId: recipientId,
       messageType,
       message: messageText,
       timestamp: new Date(),
       imageUrl: messageType === "image" ? req.file.path : null,
     });
+
+    console.log(newMessage);
 
     await newMessage.save();
     res.status(200).json({ message: "Message sent Successfully" });

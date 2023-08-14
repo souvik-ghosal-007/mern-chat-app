@@ -49,13 +49,12 @@ const ChatMessagesScreen = () => {
         formData.append("messageText", message);
       }
 
-      const res = await fetch(
-        "https://chat-app-backend-of1h.onrender.com/messages",
-        {
-          method: "POST",
-          body: FormData,
-        }
-      );
+      console.log(formData);
+
+      const res = await fetch("https://chat-app-backend-of1h.onrender.com/messages", {
+        method: "POST",
+        body: formData,
+      });
 
       if (res.ok) {
         setMessage("");
