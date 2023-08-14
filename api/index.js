@@ -221,8 +221,6 @@ app.get("/friends/:userId", async (req, res) => {
 });
 
 // Post messages
-const multer = require("multer");
-
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "files/");
